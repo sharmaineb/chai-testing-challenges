@@ -29,4 +29,4 @@ Submit your code using [Gradescope](https://gradescope.com).
 |http://localhost:3000/users/{userId}| PUT | update an exisiting user|
 |http://localhost:3000/users/{userId} | DELETE | delete a user |
 
-{userId} = Route parameter = `:userId`
+{userId} = Route parameter = `:userId`# chai-testing-challenges
