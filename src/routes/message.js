@@ -7,16 +7,27 @@ const Message = require('../models/message')
 /** Route to get all messages. */
 router.get('/', (req, res) => {
     // TODO: Get all Message objects using `.find()`
-
-    // TODO: Return the Message objects as a JSON list
+    Message.find().then((messages) => {
+    // TODO: Return the Message objects as a JSON list    
+        return res.json({ messages })
+    })
+    .catch((err) => {
+        throw err.message
+    })
 })
 
 /** Route to get one message by id. */
 router.get('/:messageId', (req, res) => {
     // TODO: Get the Message object with id matching `req.params.id`
     // using `findOne`
-
+    Message.findOne({ _id: req.params.messageId })
+    .then ((result) => {
     // TODO: Return the matching Message object as JSON
+        res.json(result)
+    })
+    .catch((err) => {
+        throw err.message
+    })
 })
 
 /** Route to add a new message. */
@@ -41,16 +52,37 @@ router.post('/', (req, res) => {
 /** Route to update an existing message. */
 router.put('/:messageId', (req, res) => {
     // TODO: Update the matching message using `findByIdAndUpdate`
-
+    Message.findByIdAndUpdate(req.params.messageId, req.body)
+    .then(() => {
+        return Message.findById({ _id: req.params.messageId })
+    })
     // TODO: Return the updated Message object as JSON
+    .then((message) => {
+        return res.json({ message })
+    })
+    .catch((err) => {
+        throw err.message
+    })
 })
 
 /** Route to delete a message. */
 router.delete('/:messageId', (req, res) => {
     // TODO: Delete the specified Message using `findByIdAndDelete`. Make sure
     // to also delete the message from the User object's `messages` array
-
+    Message.findByIdAndDelete(req.params.messageId)
+    .then((message) => {
+        if (message === null) {
+            return res.json({ message: 'Message does not exist.' })
+        } else {
     // TODO: Return a JSON object indicating that the Message has been deleted
+            return res.json({
+                'message': 'Message has been deleted.'
+            })
+        }
+    })
+    .catch((err) => {
+        throw err.message
+    })
 })
 
 module.exports = router
